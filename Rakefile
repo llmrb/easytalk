@@ -2,7 +2,7 @@
 
 desc "Build the frontend"
 task :build do
-  Dir.chdir File.join(__dir__, "public") do
+  Dir.chdir File.join(__dir__, "app", "frontend") do
     sh "npx webpack build"
   end
 end

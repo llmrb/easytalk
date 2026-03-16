@@ -10,6 +10,7 @@
     "@babel/core": "^7.26.10",
     "@babel/preset-react": "^7.26.3",
     "babel-loader": "^10.0.0",
+    "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
     "postcss": "^8.5.3",
     "postcss-loader": "^8.1.1",

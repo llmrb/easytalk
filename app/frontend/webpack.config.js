@@ -1,10 +1,11 @@
 const path = require("path")
+const CopyPlugin = require("copy-webpack-plugin")
 
 module.exports = {
   mode: "development",
-  entry: path.resolve(__dirname, "index.js"),
+  entry: path.resolve(__dirname, "js/index.js"),
   output: {
-    path: __dirname,
+    path: path.resolve(__dirname, "..", "..", "public", "js"),
     filename: "easytalk.js",
     clean: false
   },
@@ -32,6 +33,19 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: {
+      "~": __dirname
+    },
     extensions: [".js", ".jsx"]
-  }
+  },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "html"),
+          to: path.resolve(__dirname, "..", "..", "public")
+        }
+      ]
+    })
+  ]
 }

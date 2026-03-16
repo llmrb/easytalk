@@ -1,5 +1,6 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react"
 import {marked} from "marked"
+import useModels from "~/js/hooks/useModels"
 
 const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
 const origin = window.location.origin
@@ -39,9 +40,7 @@ export default function App() {
   const [entries, setEntries] = useState([])
   const [streaming, setStreaming] = useState("")
   const [provider, setProvider] = useState("openai")
-  const [models, setModels] = useState([])
-  const [model, setModel] = useState("")
-  const [modelsLoading, setModelsLoading] = useState(false)
+  const {error: modelsError, loading: modelsLoading, model, models, setModel} = useModels(provider)
   const socketRef = useRef(null)
   const streamRef = useRef(null)
 
@@ -61,30 +60,15 @@ export default function App() {
   }
 
   useEffect(() => {
-    const controller = new AbortController()
-    setModels([])
-    setModel("")
-    setModelsLoading(true)
-    setStatus("loading models")
-    fetch(`/models?provider=${encodeURIComponent(provider)}`, {signal: controller.signal})
-      .then((response) => response.json())
-      .then((payload) => {
-        setModels(payload)
-        setModel(payload[0]?.id || "")
-        setModelsLoading(false)
-        setStatus("ready")
-      })
-      .catch((error) => {
-        if (error.name === "AbortError") {
-          return
-        }
-        setModelsLoading(false)
-        setStatus("model error")
-        say("client: failed to load models")
-      })
-
-    return () => controller.abort()
-  }, [provider])
+    if (modelsLoading) {
+      setStatus("loading models")
+    } else if (modelsError) {
+      setStatus("model error")
+      say("client: failed to load models")
+    } else if (models.length > 0 && status === "loading models") {
+      setStatus("ready")
+    }
+  }, [models.length, modelsError, modelsLoading, status])
 
   useEffect(() => {
     if (!model) {
@@ -192,8 +176,6 @@ export default function App() {
   }
 
   const onProviderChange = (event) => {
-    setModels([])
-    setModel("")
     setProvider(event.target.value)
   }
 
