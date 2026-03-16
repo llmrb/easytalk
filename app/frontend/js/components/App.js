@@ -40,7 +40,7 @@ export default function App() {
   const [message, setMessage] = useState("")
   const [provider, setProvider] = useState("openai")
   const {loading: modelsLoading, model, models, setModel} = useModels(provider)
-  const {entries, send, status, streaming} = useWebSocket(provider, model)
+  const {entries, send, status, streaming} = useWebSocket(provider, model, setModel)
   const streamRef = useRef(null)
 
   const scrollToBottom = () => {
