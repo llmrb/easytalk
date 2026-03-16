@@ -4,7 +4,9 @@ module Controller
   class Websocket < Base
     def call
       Async::WebSocket::Adapters::Rack.open(request.env) do |conn|
-        on_connect conn, llm, LLM::Session.new(llm, model:, tools:)
+        stream = Stream.new(conn, self)
+        params = {model:, stream:, tools:}
+        on_connect conn, llm, LLM::Session.new(llm, params)
       end || upgrade_required
     end
 
@@ -23,17 +25,17 @@ module Controller
     end
 
     def read(conn, sess, message)
-      stream = Stream.new(conn, self)
+
       write(conn, event: "status", message: "Thinking…")
       if sess.messages.empty?
-        sess.talk(initial_prompt(message), stream:)
+        sess.talk initial_prompt(message)
       else
-        sess.talk(message.buffer, stream:)
+        sess.talk(message.buffer)
       end
       while sess.functions.any?
         functions = sess.functions
         write(conn, event: "status", message: tool_status(functions))
-        sess.talk(functions.map(&:call), stream:)
+        sess.talk functions.map(&:call)
       end
       write(conn, event: "status", message: "Done")
       write(conn, event: "done")
