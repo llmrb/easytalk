@@ -1,5 +1,7 @@
 .env
 .bundle/gems
 node_modules/
-easytalk.js*
-public/g/
+public/index.html
+public/js/
+public/g/*
+!public/g/.gitkeep
