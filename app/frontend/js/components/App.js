@@ -1,5 +1,7 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react"
 import {marked} from "marked"
+import ModelSelect from "~/js/components/ModelSelect"
+import ProviderSelect from "~/js/components/ProviderSelect"
 import useModels from "~/js/hooks/useModels"
 
 const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
@@ -229,39 +231,13 @@ export default function App() {
         </p>
         <div className="flex justify-center text-sm">
           <div className="flex items-center gap-3 text-zinc-500">
-            <label className="flex items-center gap-2">
-              <span>Provider</span>
-              <select
-                className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 outline-none focus:border-zinc-300 focus:ring-4 focus:ring-zinc-900/10"
-                value={provider}
-                onChange={onProviderChange}
-              >
-                <option value="openai">OpenAI</option>
-                <option value="gemini">Gemini</option>
-                <option value="anthropic">Anthropic</option>
-                <option value="deepseek">DeepSeek</option>
-                <option value="xai">xAI</option>
-              </select>
-            </label>
-            <label className="flex items-center gap-2">
-              <span>Model</span>
-              <select
-                className="min-w-72 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-zinc-900 outline-none focus:border-zinc-300 focus:ring-4 focus:ring-zinc-900/10 disabled:bg-zinc-100 disabled:text-zinc-400"
-                value={model}
-                disabled={modelsLoading || models.length === 0}
-                onChange={(event) => setModel(event.target.value)}
-              >
-                {modelsLoading ? (
-                  <option value="">Loading models...</option>
-                ) : (
-                  models.map((entry) => (
-                    <option key={entry.id} value={entry.id}>
-                      {entry.name || entry.id}
-                    </option>
-                  ))
-                )}
-              </select>
-            </label>
+            <ProviderSelect provider={provider} onChange={onProviderChange} />
+            <ModelSelect
+              loading={modelsLoading}
+              model={model}
+              models={models}
+              onChange={(event) => setModel(event.target.value)}
+            />
             <span className="text-xs text-zinc-400">
               {modelsLoading ? "..." : `${models.length} models`}
             </span>
