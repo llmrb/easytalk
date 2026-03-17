@@ -1,9 +1,9 @@
 ## About
 
 RealTalk is a small chat app built with [llm.rb](https://github.com/llmrb/llm.rb).
-It demonstrates streaming over WebSockets, tool calls, provider switching, and
-model selection in a simple Rack app with a small React frontend. See the
-[Screencast](#screencast) for a demo.
+It demonstrates streaming over WebSockets, tool calls, image generation,
+provider switching, and model selection in a simple Rack app with a
+small React frontend. See the [Screencast](#screencast) for a demo.
 
 Enjoy :)
 
