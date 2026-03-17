@@ -52,6 +52,12 @@ export default function App () {
 
   const onProviderChange = (event) => {
     setProvider(event.target.value)
+    setCost('')
+  }
+
+  const onModelChange = (event) => {
+    setModel(event.target.value)
+    setCost('')
   }
 
   return (
@@ -71,7 +77,7 @@ export default function App () {
               loading={modelsLoading}
               model={model}
               models={models}
-              onChange={(event) => setModel(event.target.value)}
+              onChange={onModelChange}
             />
             <span className='text-center text-xs text-zinc-400'>
               {modelsLoading ? '...' : `${models.length} models`}
