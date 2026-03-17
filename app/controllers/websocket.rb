@@ -37,7 +37,7 @@ module Controller
         sess.talk functions.map(&:call)
       end
       write(conn, event: "status", message: "Done")
-      write(conn, event: "done")
+      write(conn, event: "done", cost: sess.cost.to_s)
     rescue StandardError => e
       pp e, e.message, e.backtrace
       write(conn, event: "status", message: "Error")

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
 
-export default function useWebSocket (provider, model, setModel) {
+export default function useWebSocket (provider, model, setModel, setCost) {
   const [status, setStatus] = useState('connecting')
   const [entries, setEntries] = useState([])
   const [streaming, setStreaming] = useState('')
@@ -47,6 +47,7 @@ export default function useWebSocket (provider, model, setModel) {
         break
       case 'done':
         finish()
+        setCost(`$${payload.cost}`)
         setStatus('ready')
         break
       case 'error':
