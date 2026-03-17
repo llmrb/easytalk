@@ -8,6 +8,10 @@ model selection in a simple Rack app with a small React frontend. See the
 
 Enjoy :)
 
+## Screencast
+
+Watch the screencast [on YouTube](https://www.youtube.com/watch?v=R3fw4i3uOlQ).
+
 ## Features
 
 - ⚙️ Rack application built with Falcon and async-websocket
@@ -52,13 +56,6 @@ Start the server:
 ```sh
 bundle exec rake serve
 ```
-
-## Screencast
-
-Watch the screencast [on YouTube](https://www.youtube.com/watch?v=cH9LvRAiHVk). I'm not particularly
-good at screencasts (this was my second one) but I tried to keep it fun and informative at the
-same time. I clearly need to work on my screencast skills :)
-
 
 ## Sources
 
