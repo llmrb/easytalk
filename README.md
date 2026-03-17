@@ -10,7 +10,9 @@ Enjoy :)
 
 ## Screencast
 
-Watch the screencast [on YouTube](https://www.youtube.com/watch?v=R3fw4i3uOlQ).
+[![Watch the screencast](https://img.youtube.com/vi/R3fw4i3uOlQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=R3fw4i3uOlQ)
+
+Watch the screencast on [YouTube](https://www.youtube.com/watch?v=R3fw4i3uOlQ).
 
 ## Features
 
