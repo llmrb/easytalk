@@ -32,12 +32,7 @@ export default function App () {
   }
 
   const onProviderChange = (event) => {
-    setSession((prev) => ({
-      ...prev,
-      provider: event.target.value,
-      model: '',
-      cost: ''
-    }))
+    setSession((prev) => ({...prev, provider: event.target.value, model: '', cost: ''}))
   }
 
   const onModelChange = (event) => {
