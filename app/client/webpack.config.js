@@ -60,6 +60,10 @@ module.exports = {
     },
     proxy: [
       {
+        context: ["/g"],
+        target: "http://127.0.0.1:9292"
+      },
+      {
         context: ["/models"],
         target: "http://127.0.0.1:9292"
       },
