@@ -3,4 +3,5 @@
 node_modules/
 public/
 tmp/
+db/*.sqlite3
 !public/g/.gitkeep

@@ -19,8 +19,8 @@ Watch the screencast on [YouTube](https://youtu.be/fOvAFq7ITiE).
 - 🌊 Streaming chat over WebSockets
 - 🔀 Switch providers: OpenAI, Gemini, Anthropic, xAI and DeepSeek
 - 🧠 Switch models: varies by provider
-- 🛠️ Add your own tools: see [app/tools/](app/tools)
-- 🖼️ Image generation via [create_image.rb](./app/tools/create_image.rb) - requires Gemini, OpenAI or xAI but works with any provider
+- 🛠️ Add your own tools: see [app/server/tools/](app/server/tools)
+- 🖼️ Image generation via [create_image.rb](./app/server/tools/create_image.rb) - requires Gemini, OpenAI or xAI but works with any provider
 
 ## Usage
 
@@ -43,6 +43,25 @@ Install Ruby gems:
 ```sh
 bundle install
 ```
+
+**Database**
+
+Create a migration:
+
+```sh
+bundle exec rake db:new_migration name=create_widgets
+```
+
+Run migrations:
+
+```sh
+bundle exec rake db:migrate
+```
+
+Models live in `app/server/models`, and the app boots Active Record from
+`db/config.yml`.
+
+The SQLite database files under `db/` are local-only and ignored by git.
 
 **Development**
 

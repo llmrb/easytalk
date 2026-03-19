@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "standalone_migrations"
+StandaloneMigrations::Tasks.load_tasks
 dir = File.join(__dir__, "app", "client")
 
 desc "Build the client"
