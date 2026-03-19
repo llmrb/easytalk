@@ -2,8 +2,9 @@
 
 RealTalk is a small chat app built with [llm.rb](https://github.com/llmrb/llm.rb).
 It demonstrates streaming over WebSockets, tool calls, image generation,
-provider switching, and model selection with a small React client and a
-simple Rack backend. See the [Screencast](#screencast) for a demo.
+provider switching, model selection, and a small Active Record-backed
+server. The client lives under `app/client`, and the Rack server lives
+under `app/server`. See the [Screencast](#screencast) for a demo.
 
 Enjoy :)
 
@@ -15,7 +16,8 @@ Watch the screencast on [YouTube](https://youtu.be/fOvAFq7ITiE).
 
 ## Features
 
-- ⚙️ Rack application built with Falcon and async-websocket
+- ⚙️ Rack application built with Falcon, Roda, and async-websocket
+- 🗃️ Active Record with standalone migrations
 - 🌊 Streaming chat over WebSockets
 - 🔀 Switch providers: OpenAI, Gemini, Anthropic, xAI and DeepSeek
 - 🧠 Switch models: varies by provider
@@ -44,6 +46,12 @@ Install Ruby gems:
 bundle install
 ```
 
+Install client packages:
+
+```sh
+bundle exec rake npm:i
+```
+
 **Database**
 
 Create a migration:
@@ -63,6 +71,14 @@ Models live in `app/server/models`, and the app boots Active Record from
 
 The SQLite database files under `db/` are local-only and ignored by git.
 
+**Server Layout**
+
+- `app/server/models` contains Active Record models
+- `app/server/routes` contains the Roda-facing endpoints
+- `app/server/tools` contains LLM tool classes
+- `app/server/router.rb` dispatches `/models` and `/ws`
+- `config.ru` serves generated images from `public/g` and boots the router
+
 **Development**
 
 Run the server and webpack dev server in separate shells:
@@ -73,7 +89,11 @@ bundle exec rake dev:client
 ```
 
 Then open `http://localhost:9293`. The Ruby server on `9292` only
-serves `/models` and `/ws`.
+serves `/models`, `/ws`, and generated images from `/g`.
+
+The webpack dev server proxies `/models`, `/ws`, and `/g` back to the
+Ruby server, so image generation works in development without building
+the client bundle first.
 
 Or run both processes together with Foreman:
 
