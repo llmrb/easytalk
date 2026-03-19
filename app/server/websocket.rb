@@ -33,11 +33,11 @@ class Server::Websocket < Server::Base
   end
 
   def tools
-    [Tool::CreateImage]
+    [Server::Tool::CreateImage]
   end
 
   def instructions
-    File.read File.join(root, "app", "prompts", "system.md")
+    File.read File.join(root, "app", "server", "prompts", "system.md")
   end
 
   def initial_prompt(message)

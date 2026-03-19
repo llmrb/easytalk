@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Tool
+module Server::Tool
   class CreateImage < LLM::Tool
     name "create-image"
     description "Create a generated image"

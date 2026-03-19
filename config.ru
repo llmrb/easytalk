@@ -4,7 +4,7 @@ require "bundler/setup"
 Bundler.require(:default)
 
 Dir[File.join(__dir__, "app", "server", "*.rb")].sort.each { require(_1) }
-Dir[File.join(__dir__, "app", "tools", "*.rb")].sort.each { require(_1) }
+Dir[File.join(__dir__, "app", "server", "tools", "*.rb")].sort.each { require(_1) }
 
 openai    = LLM.openai(key: ENV["OPENAI_SECRET"])
 gemini    = LLM.gemini(key: ENV["GEMINI_SECRET"])
