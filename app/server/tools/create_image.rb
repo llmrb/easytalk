@@ -10,7 +10,7 @@ module Server::Tool
 
     ##
     # Returns a HTML link for an image
-    # @return [Hash]
+    # @return [Array<Hash>]
     def call(prompt:, provider: "xai", n: 1)
       key  = ENV["#{provider.upcase}_SECRET"]
       llm  = LLM.method(provider).call(key:)

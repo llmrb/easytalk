@@ -4,7 +4,9 @@ module Server::Routes
   class Websocket < Base
     require_relative "websocket/connection"
     require_relative "websocket/stream"
+
     include Connection
+    include Server::Tool
 
     def call
       Async::WebSocket::Adapters::Rack.open(request.env) do |conn|
@@ -30,7 +32,7 @@ module Server::Routes
     end
 
     def tools
-      [Server::Tool::CreateImage]
+      [CreateImage]
     end
 
     def instructions
