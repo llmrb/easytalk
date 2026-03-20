@@ -1,4 +1,4 @@
-module Server::Tool
+module Server::Tools
   class Base < LLM::Tool
     ##
     # Returns the root directory of the project

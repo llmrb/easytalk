@@ -6,7 +6,7 @@ module Server::Routes
     require_relative "websocket/stream"
 
     include Connection
-    include Server::Tool
+    include Server::Tools
 
     def call
       Async::WebSocket::Adapters::Rack.open(request.env) do |conn|

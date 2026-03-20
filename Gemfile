@@ -15,6 +15,7 @@ gem "rackup"
 gem "sidekiq"
 gem "sqlite3"
 gem "standalone_migrations"
+gem "zeitwerk"
 
 group :development do
   gem "foreman"

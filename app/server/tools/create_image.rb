@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Server::Tool
+module Server::Tools
   class CreateImage < Base
     name "create-image"
     description "Create a generated image"
