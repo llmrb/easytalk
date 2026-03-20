@@ -20,6 +20,10 @@ class Server::Router < Roda
       throw :halt, Websocket.new(self).call
     end
 
-    [404, {"content-type" => "text/plain"}, ["Not Found\n"]]
+    r.get do
+      response.status = 200
+      response['content-type'] = "text/plain"
+      "Relay v0.1.0\nPowered by Ruby"
+    end
   end
 end
