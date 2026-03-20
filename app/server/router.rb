@@ -2,8 +2,23 @@
 
 class Server::Router < Roda
   plugin :common_logger
+  plugin :partials,
+    escape: true,
+    layout: "layout",
+    views: File.expand_path("views", __dir__)
 
   include Server::Routes
+
+  def page_view(name, current_path:, title:)
+    view(
+      name,
+      layout_opts: {
+        locals: {
+          title:
+        }
+      }
+    )
+  end
 
   route do |r|
     r.on "api" do
@@ -24,10 +39,13 @@ class Server::Router < Roda
       end
     end
 
-    r.get do
-      response.status = 200
-      response['content-type'] = "text/plain"
-      "Relay v0.1.0\nPowered by Ruby"
+    r.root do
+      response['content-type'] = "text/html; charset=utf-8"
+      page_view("chat", current_path: "/", title: "Relay")
+    end
+
+    r.get true do
+      r.redirect "/"
     end
   end
 end

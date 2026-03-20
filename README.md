@@ -3,8 +3,9 @@
 Relay is a small chat app built with [llm.rb](https://github.com/llmrb/llm.rb).
 It demonstrates streaming over WebSockets, tool calls, image generation,
 provider switching, model selection, and a small Active Record-backed
-server. The client lives under `app/client`, and the Rack server lives
-under `app/server`. See the [Screencast](#screencast) for a demo.
+server. The app renders HTML from `app/server/views`, and the Rack
+server lives under `app/server`. See the [Screencast](#screencast) for a
+demo.
 
 Enjoy :)
 
@@ -47,12 +48,6 @@ Install Ruby gems:
 bundle install
 ```
 
-Install client packages:
-
-```sh
-bundle exec rake npm:i
-```
-
 **Database**
 
 Create a migration:
@@ -77,28 +72,26 @@ The SQLite database files under `db/` are local-only and ignored by git.
 - `app/server/models` contains Active Record models
 - `app/server/routes` contains the Roda-facing endpoints
 - `app/server/tools` contains LLM tool classes
+- `app/server/views` contains the HTML templates and HTMX fragments
 - `app/server/router.rb` dispatches `/api/models`, `/api/tools`, and
   `/api/ws`
-- `config.ru` serves generated images from `public/g` and boots the router
+- `config.ru` serves generated images and static images from `public/`
+  and boots the router
 
 **Development**
 
-Run the server, Sidekiq, and webpack dev server in separate shells:
+Run the server and Sidekiq in separate shells:
 
 ```sh
 bundle exec rake dev:server
 bundle exec rake dev:sidekiq
-bundle exec rake dev:client
 ```
 
-Then open `http://localhost:9293`. The Ruby server on `9292` only
-serves `/api/models`, `/api/ws`, and generated images from `/g`.
+Then open `http://localhost:9292`. The Ruby server serves the HTML
+pages, `/api/models`, `/api/tools`, `/api/ws`, and generated images
+from `/g`.
 
-The webpack dev server proxies `/api/models`, `/api/tools`, `/api/ws`,
-and `/g` back to the Ruby server, so image generation works in
-development without building the client bundle first.
-
-Or run all three processes together with Foreman:
+Or run both processes together with Foreman:
 
 ```sh
 bundle exec foreman start

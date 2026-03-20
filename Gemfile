@@ -15,6 +15,7 @@ gem "rackup"
 gem "sidekiq"
 gem "sqlite3"
 gem "standalone_migrations"
+gem "tilt"
 gem "zeitwerk"
 
 group :development do

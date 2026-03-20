@@ -4,13 +4,12 @@ require "standalone_migrations"
 StandaloneMigrations::Tasks.load_tasks
 
 client_dir = File.join(__dir__, "app", "client")
-server_dir = File.join(__dir__, "app", "server")
 
-desc "Build the client"
-task build: %i[npm:build]
+desc "Build the app"
+task build: %i[assets:build]
 
 namespace :dev do
-  desc "Serve the server without rebuilding client assets"
+  desc "Serve the server"
   task :server do
     sh "env $(cat .env) " \
        "bundle exec falcon serve --bind http://0.0.0.0:9292"
@@ -22,26 +21,31 @@ namespace :dev do
        "bundle exec sidekiq -C app/server/config/sidekiq.yml -r ./app/server/init.rb"
   end
 
-  desc "Run webpack-dev-server for the client"
-  task client: %i[npm:i] do
-    Dir.chdir(client_dir) do
-      sh "npm run dev"
-    end
+  desc "Watch Tailwind CSS"
+  task :css do
+    sh "npm run css:watch"
   end
 end
 
-namespace :npm do
-  desc "Build the client"
-  task build: %i[npm:i] do
-    Dir.chdir(client_dir) do
-      sh "npx webpack build"
-    end
+namespace :css do
+  desc "Build Tailwind CSS"
+  task :build do
+    sh "npm run css:build"
   end
+end
 
-  desc "Run 'npm install'"
-  task :i do
-    Dir.chdir(client_dir) do
-      sh "npm i"
-    end
+namespace :assets do
+  desc "Build frontend assets"
+  task build: %i[css:build js:vendor]
+end
+
+namespace :js do
+  desc "Copy vendor JavaScript assets"
+  task :vendor do
+    mkdir_p File.join(__dir__, "public", "vendor")
+    cp File.join(__dir__, "node_modules", "htmx.org", "dist", "htmx.min.js"),
+      File.join(__dir__, "public", "vendor", "htmx.min.js")
+    cp File.join(__dir__, "node_modules", "htmx-ext-ws", "ws.js"),
+      File.join(__dir__, "public", "vendor", "htmx-ext-ws.js")
   end
 end

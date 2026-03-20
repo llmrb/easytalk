@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@source "../../../server/views/**/*.erb";
+
+@theme {
+  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+}
+
+@layer base {
+  body {
+    @apply min-h-screen bg-white text-zinc-900 antialiased;
+  }
+
+  ::selection {
+    @apply bg-zinc-200 text-zinc-900;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-3xl border border-zinc-200 bg-white shadow-sm;
+  }
+
+  .assistant-content {
+    @apply max-w-none whitespace-normal leading-7;
+  }
+
+  .assistant-content p {
+    @apply my-4;
+  }
+
+  .assistant-content p:first-child {
+    @apply mt-0;
+  }
+
+  .assistant-content p:last-child {
+    @apply mb-0;
+  }
+
+  .assistant-content ul {
+    @apply my-4 list-disc pl-6;
+  }
+
+  .assistant-content ol {
+    @apply my-4 list-decimal pl-6;
+  }
+
+  .assistant-content li {
+    @apply my-1.5;
+  }
+
+  .assistant-content pre {
+    @apply my-4 overflow-x-auto rounded-2xl bg-zinc-100 p-3;
+  }
+
+  .assistant-content code {
+    @apply font-mono;
+  }
+
+  .assistant-content blockquote {
+    @apply my-4 border-l-4 border-zinc-300 pl-4 text-zinc-600;
+  }
+
+  .assistant-content img {
+    @apply mt-2 h-auto max-h-[32rem] w-full max-w-2xl rounded-2xl object-contain;
+  }
+
+  .label {
+    @apply block text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500;
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-zinc-200 bg-white px-3 py-3 text-zinc-700 outline-none transition focus:border-zinc-400 focus:ring-4 focus:ring-zinc-900/5;
+  }
+}

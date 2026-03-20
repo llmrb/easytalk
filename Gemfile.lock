@@ -257,6 +257,7 @@ GEM
     string-format (0.2.0)
     stringio (3.2.0)
     thor (1.5.0)
+    tilt (2.7.0)
     timeout (0.6.1)
     traces (0.18.2)
     tsort (0.2.0)
@@ -289,6 +290,7 @@ DEPENDENCIES
   sqlite3
   standalone_migrations
   standard
+  tilt
   zeitwerk
 
 BUNDLED WITH

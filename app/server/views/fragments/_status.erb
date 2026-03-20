@@ -1,0 +1,18 @@
+<div
+  id="chatbot-status"
+  hx-swap-oob="outerHTML"
+  class="grid grid-cols-3 gap-4 text-sm text-zinc-500"
+>
+  <p class="flex min-h-[2.75rem] min-w-0 flex-col justify-center text-left leading-tight">
+    <span class="label">Status</span>
+    <span class="mt-1 block font-medium text-zinc-700"><%= status %></span>
+  </p>
+  <p class="flex min-h-[2.75rem] flex-col justify-center text-center leading-tight">
+    <span class="label">Context Window</span>
+    <span class="mt-1 block font-medium text-zinc-700"><%= context_window %></span>
+  </p>
+  <p class="flex min-h-[2.75rem] flex-col justify-center text-right leading-tight">
+    <span class="label">Cost</span>
+    <span class="mt-1 block font-medium text-zinc-700"><%= cost %></span>
+  </p>
+</div>

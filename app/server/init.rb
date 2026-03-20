@@ -19,4 +19,11 @@ module Server
   loader.setup
 
   require_relative "sidekiq"
+
+  ##
+  # Returns the path to the public/ directory
+  # @return [String]
+  def self.public_dir
+    @public_dir ||= File.realpath File.join(__dir__, "..", "..", "public")
+  end
 end

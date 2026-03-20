@@ -8,7 +8,7 @@ class Server::Routes::Websocket
     end
 
     def <<(chunk)
-      @sock.write(@conn, event: "delta", message: chunk.to_s)
+      @sock.stream(@conn, chunk.to_s)
     end
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "protocol/websocket/message"
+
 class Server::Routes::Websocket
   module Connection
     ##
@@ -12,28 +14,23 @@ class Server::Routes::Websocket
     #  The current LLM session
     # @return [void]
     def on_connect(conn, llm, sess)
-      welcome_event = {
-        event: "welcome",
-        provider: llm.class.to_s,
-        model: sess.model,
-        contextWindow: sess.context_window,
-        contextWindowUsage: sess.usage.total_tokens || 0,
-      }
-      write(conn, welcome_event)
+      write(conn, fragment(:status, status: "Ready", cost: "$0.00", context_window: context_window(sess)))
       while (message = conn.read)
-        read(conn, sess, message)
+        read conn, sess, parse_message(message)
       end
+    rescue EOFError
+      nil
     end
 
     ##
-    # Writes a message to the WebSocket connection
+    # Writes an HTML fragment to the websocket as a text frame
     # @param [Async::WebSocket::Adapters::Rack] conn
     #  The WebSocket connection object
-    # @param [Hash] message
-    #  The message to send, which will be converted to JSON
+    # @param [String] message
+    #  The rendered HTML fragment
     # @return [void]
     def write(conn, message)
-      conn.write(message.to_json)
+      conn.write(Protocol::WebSocket::TextMessage.new(String(message)))
       conn.flush
     end
 
@@ -47,17 +44,19 @@ class Server::Routes::Websocket
     #  The incoming message
     # @return [void]
     def read(conn, sess, message)
-      write(conn, event: "status", message: "Thinking…")
+      return if message.to_s.empty?
+      vars[:messages].concat [{role: "user", content: message}, {role: "assistant", content: +""}]
+      write(conn, fragment(:chat))
+      write(conn, fragment(:status, status: "Thinking..."))
       send(sess, message)
       invoke(sess, sess.functions, conn)
-      write(conn, event: "status", message: "Done")
-      write(conn, event: "done", cost: sess.cost.to_s)
+      write(conn, fragment(:input))
+      write(conn, fragment(:status, status: "Ready", context_window: context_window(sess), cost: format_cost(sess.cost)))
     rescue LLM::NoSuchRegistryError, LLM::NoSuchModelError
-      write(conn, event: "done", cost: "unknown")
+      write(conn, fragment(:status, cost: "unknown", status: "Ready"))
     rescue StandardError => e
       pp e.class, e.message, e.backtrace
-      write(conn, event: "status", message: "Error")
-      write(conn, event: "error")
+      write(conn, fragment(:status, status: "Error"))
     end
 
     ##
@@ -71,7 +70,7 @@ class Server::Routes::Websocket
       if sess.messages.empty?
         sess.talk initial_prompt(message)
       else
-        sess.talk(message.buffer)
+        sess.talk(message)
       end
     end
 
@@ -84,10 +83,82 @@ class Server::Routes::Websocket
     # @return [void]
     def invoke(sess, functions, conn)
       while functions.any?
-        write(conn, event: "status", message: tool_status(functions))
+        write(conn, fragment(:status, status: tool_status(functions)))
         sess.talk functions.map(&:call)
         functions = sess.functions
       end
+    end
+
+    ##
+    # Appends a streamed assistant chunk to the last assistant message and re-renders chat
+    # @param [Async::WebSocket::Adapters::Rack] conn
+    #  The WebSocket connection object
+    # @param [String] chunk
+    #  The streamed assistant text chunk
+    # @return [void]
+    def stream(conn, chunk)
+      message = vars[:messages].reverse_each.find { _1[:role] == "assistant" }
+      message[:content] << chunk
+      write conn, fragment(:chat)
+    end
+
+    ##
+    # Renders a websocket fragment using the retained fragment state
+    # @param [Symbol] name
+    #  The fragment name
+    # @param [Hash] locals
+    #  The local values to merge into the retained fragment state
+    # @return [String]
+    #  The rendered HTML fragment
+    def fragment(name, **locals)
+      vars.merge!(locals)
+      case name
+      when :chat then partial("fragments/stream", locals: vars)
+      when :status then partial("fragments/status", locals: vars)
+      when :input then partial("fragments/input")
+      end
+    end
+
+    ##
+    # Formats the session token usage against the model context window
+    # @param [LLM::Session] sess
+    #  The current LLM session
+    # @return [String]
+    #  The context window usage string
+    def context_window(sess)
+      "#{sess.usage.total_tokens || 0} / #{sess.context_window || 0} tokens"
+    end
+
+    ##
+    # Formats the session cost for display
+    # @param [String] cost
+    #  The raw session cost
+    # @return [String]
+    #  The formatted cost string
+    def format_cost(cost)
+      return "unknown" if cost == "unknown"
+
+      "$#{cost}"
+    end
+
+    ##
+    # Parses an incoming websocket frame from HTMX and extracts the message text
+    # @param [Protocol::WebSocket::Message] message
+    #  The websocket message frame
+    # @return [String]
+    #  The message text, or an empty string if parsing fails
+    def parse_message(message)
+      buffer = JSON.parse(message.buffer)
+      buffer['message']
+    rescue JSON::ParserError
+      ""
+    end
+
+    ##
+    # Returns the fragments variables
+    # @return [Hash]
+    def vars
+      @temp ||= { messages: [] }
     end
   end
 end

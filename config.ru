@@ -6,5 +6,5 @@ map "/sidekiq" do
   run Sidekiq::Web
 end
 
-use Rack::Static, urls: ["/g"], root: "public"
+use Rack::Static, urls: ["/g", "/images", "/stylesheets", "/vendor"], root: "public"
 run Server::Router

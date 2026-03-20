@@ -1,0 +1,32 @@
+<aside class="hidden shrink-0 lg:flex lg:h-full lg:w-56 lg:flex-col lg:pt-2">
+  <div class="flex flex-col items-center gap-4">
+    <a
+      href="/"
+      aria-label="Relay home"
+      class="block"
+    >
+      <img
+        class="max-h-16 w-auto max-w-[11rem] rounded-2xl"
+        src="/images/relay.png"
+        alt="Relay"
+      >
+    </a>
+    <% if show_controls %>
+      <form class="flex w-full flex-col gap-3 text-sm text-zinc-500">
+        <label class="flex flex-col gap-2">
+          <span class="label">Provider</span>
+          <select class="field">
+            <option>DeepSeek</option>
+          </select>
+        </label>
+        <label class="flex flex-col gap-2">
+          <span class="label">Model</span>
+          <select class="field">
+            <option>deepseek-chat</option>
+          </select>
+        </label>
+        <span class="text-center text-xs text-zinc-400">1 model</span>
+      </form>
+    <% end %>
+  </div>
+</aside>

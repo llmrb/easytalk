@@ -1,0 +1,25 @@
+<form
+  id="chat-composer"
+  class="sticky bottom-0 flex flex-col gap-2 bg-gradient-to-b from-white/0 via-white/90 to-white pt-1 pb-1"
+  hx-swap-oob="outerHTML"
+  hx-on::after-settle="this.querySelector('textarea')?.focus()"
+  ws-send
+>
+  <textarea
+    name="message"
+    rows="1"
+    class="max-h-60 min-h-14 w-full resize-none overflow-y-auto rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-[15px] text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-300 focus:ring-4 focus:ring-zinc-900/10"
+    placeholder="Type a message"
+    autocomplete="off"
+    autofocus
+    onkeydown="if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); this.form.requestSubmit(); }"
+  ></textarea>
+  <div class="flex justify-end">
+    <button
+      class="min-w-24 rounded-full bg-zinc-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 focus:ring-4 focus:ring-zinc-900/10 focus:outline-none"
+      type="submit"
+    >
+      Send
+    </button>
+  </div>
+</form>
