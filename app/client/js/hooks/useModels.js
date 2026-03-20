@@ -17,7 +17,7 @@ export default function useModels ({ session, setSession }) {
   const receive = (payload) => {
     setModels(payload)
     setLoading(false)
-    setSession((prev) => ({...prev, model: payload[0]?.id || ''}))
+    setSession((prev) => ({...prev, model: payload[0].id}))
     return payload
   }
 

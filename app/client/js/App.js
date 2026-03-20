@@ -80,6 +80,8 @@ export default function App () {
   }, [message])
 
   useEffect(() => {
+    if (modelsLoading)
+      return
     switch(session.provider) {
       case 'openai':
         setSession((prev) => ({...prev, model: 'gpt-5.4'}))
@@ -88,7 +90,7 @@ export default function App () {
         setSession((prev) => ({...prev, model: 'google-pro-latest'}))
         break;
     }
-  }, [session.provider])
+  }, [session.provider, modelsLoading])
 
   return (
     <main className='h-screen bg-white font-sans text-zinc-900'>
