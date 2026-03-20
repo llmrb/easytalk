@@ -10,6 +10,12 @@ class Server::Router < Roda
       end
     end
 
+    r.is "tools" do
+      r.get do
+        ListTools.new(self).call
+      end
+    end
+
     r.is "ws" do
       throw :halt, Websocket.new(self).call
     end

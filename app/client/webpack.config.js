@@ -68,6 +68,10 @@ module.exports = {
         target: "http://127.0.0.1:9292"
       },
       {
+        context: ["/tools"],
+        target: "http://127.0.0.1:9292"
+      },
+      {
         context: ["/ws"],
         target: "http://127.0.0.1:9292",
         ws: true
