@@ -18,6 +18,7 @@ gem "sidekiq"
 gem "sqlite3"
 gem "tilt"
 gem "zeitwerk"
+gem "kramdown"
 
 group :development do
   gem "standard"
