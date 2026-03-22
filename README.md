@@ -10,6 +10,10 @@ Relay serves as a reference implementation for building real-time,
 tool-enabled LLM applications with llm.rb in a production-style
 environment.
 
+## Screencast
+
+[![Watch the Relay screencast](https://img.youtube.com/vi/A52YcO7SSyk/maxresdefault.jpg)](https://www.youtube.com/watch?v=A52YcO7SSyk)
+
 ## Features
 
 ### Application
@@ -124,10 +128,6 @@ For shared in-process state, Relay exposes `Relay.cache`, which is
 backed by `Relay::Cache::InMemoryCache`. This is useful for small,
 ephemeral caches such as model lists that can be reused across routes
 without treating them as persistent data.
-
-## Screencast
-
-[![Watch the Relay screencast](https://img.youtube.com/vi/A52YcO7SSyk/maxresdefault.jpg)](https://www.youtube.com/watch?v=A52YcO7SSyk)
 
 ## Sources
 
