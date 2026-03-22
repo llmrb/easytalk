@@ -1,0 +1,11 @@
+<div
+  id="chat-panel"
+  class="flex min-h-24 min-w-0 flex-1 flex-col gap-4"
+  hx-ext="ws"
+  hx-swap-oob="outerHTML"
+  ws-connect="/api/ws"
+>
+  <%== partial("fragments/stream", locals: {messages: [{role: :system, content: "Welcome to Relay"}]}) %>
+  <%== partial("fragments/status", locals: {status: "Ready", context_window: "0 / 0 tokens", cost: "$0.00"}) %>
+  <%== partial("fragments/input") %>
+</div>
