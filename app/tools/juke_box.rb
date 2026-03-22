@@ -18,7 +18,7 @@ module Relay::Tools
     #  Returns an iframe with an embed
     def call
       jukebox.map do |j|
-        {directions: "cache the jukebox", iframe: iframe(j)}
+        {directions:, iframe: iframe(j)}
       end
     end
 
@@ -35,6 +35,10 @@ module Relay::Tools
         permitted_classes: [],
         aliases: false
       )
+    end
+
+    def directions
+      %w["cache the jukebox", "embed the iframe in your response"]
     end
   end
 end
