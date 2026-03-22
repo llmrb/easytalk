@@ -21,12 +21,7 @@
             <option>DeepSeek</option>
           </select>
         </label>
-        <label class="flex flex-col gap-2">
-          <span class="label">Model</span>
-          <select class="field">
-            <option>deepseek-chat</option>
-          </select>
-        </label>
+        <label class="flex flex-col gap-2" hx-get="/models" hx-trigger="load"></label>
         <span class="text-center text-xs text-zinc-400">1 model</span>
       </form>
     <% end %>

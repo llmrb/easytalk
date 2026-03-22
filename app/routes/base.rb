@@ -12,16 +12,16 @@ module Relay::Routes
 
     ##
     # @return [String]
-    #  The requested provider, defaulting to openai
+    #  The requested provider, defaulting to deepseek
     def provider
-      params["provider"] || "openai"
+      session["provider"] || "deepseek"
     end
 
     ##
     # @return [String,nil]
     #  The requested model
     def model
-      params["model"]
+      session["model"] || params["model"]
     end
 
     ##
@@ -59,10 +59,16 @@ module Relay::Routes
     end
 
     ##
+    # @return [Relay::InMemoryCache]
+    def cache
+      Relay.cache
+    end
+
+    ##
     # Delegate missing methods to the Roda instance
-    def method_missing(name, *args, &block)
+    def method_missing(name, *args, **kwargs, &block)
       if @roda.respond_to?(name)
-        @roda.send(name, *args, &block)
+        @roda.send(name, *args, **kwargs, &block)
       else
         super
       end

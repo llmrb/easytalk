@@ -19,6 +19,9 @@ environment.
 - 🗃️ Sequel with built-in migrations
 - 🧵 Sidekiq workers for background jobs
 - 🧰 Built-in task monitor that supervises the full dev environment: web, workers, assets
+- 🗂️  Session support through Roda's session plugin
+- ⚡ In-memory cache support via `Relay.cache`
+- 🔐 Automatic `.env` loading during app boot
 
 ## Quick start
 
@@ -45,6 +48,8 @@ REDIS_URL=
 ```
 ## Architecture
 
+**Overview**
+
 The architecture is intentionally simple. HTMX keeps the client light,
 while server-rendered HTML keeps the application comfortable for
 Ruby-focused developers. Background work is handled with Sidekiq, and
@@ -54,6 +59,7 @@ Some important notes:
 
 * The app boots from `app/init.rb`, which sets up the database,
   autoloading, and application initialization.
+* `.env` is loaded automatically during boot when present.
 * HTTP routing is handled by Roda, with templates rendered from
   `app/views` and static assets served from `public/`.
 * Webpack builds the JavaScript and CSS assets from `app/assets`.
@@ -70,6 +76,43 @@ The codebase is organized by responsibility:
 - `db/` contains database configuration and migrations
 - `tasks/` contains rake tasks for development, assets, and database work
 - `lib/relay` contains support code like the task monitor
+
+**Route**
+
+A route is a class that inherits from `Relay::Routes::Base` and
+implements `call`. `Base` delegates missing methods to the current
+Roda instance, so route classes can use helpers like `view`, `partial`,
+`request`, `response`, `session`, and `params`:
+
+```ruby
+# app/routes/some_route.rb
+module Relay::Routes
+  class SomeRoute < Base
+    def call
+      "hello world"
+    end
+  end
+end
+
+# app/init/router.rb
+r.on "some-route" do
+  r.is do
+    SomeRoute.new(self).call
+  end
+end
+```
+
+**State**
+
+Relay includes session support through Roda's session plugin. This is
+useful for lightweight per-user state such as the current provider and
+model, which can be rendered directly in views and updated through
+normal route handlers.
+
+For shared in-process state, Relay exposes `Relay.cache`, which is
+backed by `Relay::Cache::InMemoryCache`. This is useful for small,
+ephemeral caches such as model lists that can be reused across routes
+without treating them as persistent data.
 
 ## Sources
 

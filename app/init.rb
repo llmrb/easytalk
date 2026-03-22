@@ -7,7 +7,6 @@ module Relay
   require "erb"
   require "yaml"
 
-
   loader = Zeitwerk::Loader.new
   loader.ignore(
     File.join(__dir__, "init.rb"),
@@ -17,6 +16,7 @@ module Relay
   loader.setup
 
   require_relative "../lib/relay"
+  require_relative "init/env"
   require_relative "init/database"
   require_relative "init/sidekiq"
   require_relative "init/router"

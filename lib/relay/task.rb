@@ -10,6 +10,8 @@
 # either "success" or "error" depending on whether the task
 # completed successfully or not.
 class Relay::Task
+  require "xchan"
+
   ##
   # @return [Chan::UNIXSocket]
   attr_reader :ch

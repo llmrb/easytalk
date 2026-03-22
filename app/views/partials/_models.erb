@@ -1,0 +1,12 @@
+<span class="label">Models</span>
+<form hx-post="/settings/set-model" hx-trigger="change from:select">
+  <select class="field" name="model">
+    <% models.each do |model| %>
+      <option
+        <%= "selected" if model.id == current_model %>
+        value="<%= model.id %>">
+        <%= model.name %>
+      </option>
+    <% end %>
+  </select>
+</form>

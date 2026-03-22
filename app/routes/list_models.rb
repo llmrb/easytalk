@@ -6,11 +6,15 @@ module Relay::Routes
     # Returns the chat-capable models for the provider
     # @return [Array]
     def call
-      response["content_type"] = "application/json"
-      filter(llm.models.all).map { { id: _1.id, name: _1.name } }.to_json
+      cache.models = filter(llm.models.all)
+      partial("partials/models", {locals:})
     end
 
     private
+
+    def locals
+      {models: cache.models, current_model: session["model"]}
+    end
 
     def filter(models)
       models.select(&:chat?)

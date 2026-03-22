@@ -1,8 +1,18 @@
 # frozen_string_literal: true
 
 module Relay
+  require_relative "relay/cache"
   require_relative "relay/task_monitor"
   require_relative "relay/task"
+
+  ##
+  # Returns an object that can be used to store application state
+  # that should persist between requests.
+  # @return [Relay::InMemoryCache]
+  def self.cache
+    @cache
+  end
+  @cache = Cache::InMemoryCache.new
 
   ##
   # Returns the root path of the application
@@ -25,4 +35,3 @@ module Relay
     @assets_dir ||= File.realpath File.join(root, "app", "assets")
   end
 end
-
