@@ -40,7 +40,7 @@ import { Dock } from "../js/dock"
         node.innerHTML = marked.parse(node.dataset.markdownSource || "")
         node.querySelectorAll("pre code").forEach(syntaxHighlight)
         node.querySelectorAll("a").forEach(modifyAnchors)
-        if (nodes.length === index+1)
+        if (index === nodes.length - 1)
           dock.scan(node)
       })
     }

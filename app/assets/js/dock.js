@@ -1,5 +1,5 @@
 export const Dock = () => {
-  const self = { activeMediaId: null }
+  const self = { activeJukeboxId: null }
 
   const notice = (title) => {
     const notice = document.createElement("p")
@@ -8,36 +8,66 @@ export const Dock = () => {
     return notice
   }
 
-  const play = (media, body, mediaId) => {
-    self.activeMediaId = mediaId
-    media.classList.remove("hidden")
-    body.replaceChildren(media)
+  const play = (jukebox, activeJukebox) => {
+    self.activeJukeboxId = jukebox.jukeBoxId
+    jukebox.parentEl.classList.remove("hidden")
+    activeJukebox.bodyEl.replaceChildren(jukebox.parentEl)
+  }
+
+  const getTemplate = () => {
+    const rawTmpl = document.getElementById("tmpl-jukebox-player").content
+    const tmpl = rawTmpl.firstElementChild.cloneNode(true)
+    const iframe  = tmpl.querySelector("iframe")
+    return {tmpl, iframe}
+  }
+
+  const getArtist = (node) =>{
+    const artistEl = node.querySelector(".artist")
+    if (artistEl) {
+      const attrs = Array.from(artistEl.querySelectorAll("[data-name]"))
+      const entries = attrs.map((el) => [el.dataset.name, el.textContent.trim()])
+      return {artistEl, artist: Object.fromEntries(entries)}
+    } else {
+      return {}
+    }
+  }
+
+  const getActiveJukebox = () => {
+    const parentEl = document.querySelector("#jukebox")
+    const titleEl = parentEl.querySelector("#jukebox-title")
+    const bodyEl = parentEl.querySelector("#jukebox-body")
+    const iframe = bodyEl.querySelector("iframe")
+    const src = iframe?.getAttribute("src")
+    return {parentEl, titleEl, bodyEl, iframe, src}
+  }
+
+  const Jukebox = (node) => {
+    const {tmpl, iframe} = getTemplate()
+    const {artist, artistEl} = getArtist(node)
+    const title = "Jukebox"
+    if (!artist) return
+    tmpl.dataset.title = title
+    tmpl.querySelector(".title").textContent = `${artist.name} - ${artist.title}`
+    iframe.src = artist.track
+    iframe.dataset.id = artist.track
+    return {
+      parentEl: tmpl,
+      titleEl: tmpl.querySelector(".title"),
+      bodyEl: tmpl.querySelector(".aspect-video"),
+      artistEl, iframe, jukeBoxId: artist.track, title
+    }
   }
 
   self.scan = (node) => {
-    const video = node.querySelector("[data-media-dock]")
-    const dock = document.querySelector("#media-dock")
-    const title = dock?.querySelector("#media-dock-title")
-    const body = dock?.querySelector("#media-dock-body")
-
-    if (!video || !dock || !title || !body) return
-
-    const iframe = video?.querySelector("iframe")
-    const mediaId = iframe?.dataset.mediaId || ""
-    if (!video || !iframe || !mediaId) return
-
-    const nextSrc = iframe.getAttribute("src") || ""
-    const currentFrame = body.querySelector("iframe")
-    const currentSrc = currentFrame?.getAttribute("src") || ""
-
-    dock.classList.remove("hidden")
-    title.textContent = video.dataset.mediaTitle || "Now Playing"
-    video.replaceWith(notice(title.textContent))
-
-    if (self.activeMediaId === mediaId) return
-    if (!nextSrc || nextSrc === currentSrc) return
-
-    play(video, body, mediaId)
+    const newJukebox = Jukebox(node)
+    if (!newJukebox) return
+    const activeJukebox = getActiveJukebox()
+    const { jukeBoxId, title, artistEl, iframe } = newJukebox
+    activeJukebox.titleEl.textContent = title || "Now Playing"
+    artistEl.replaceWith(notice(activeJukebox.titleEl.textContent))
+    if (self.activeJukeboxId === jukeBoxId) return
+    if (iframe.getAttribute("src") === activeJukebox.src) return
+    play(newJukebox, activeJukebox)
   }
 
   return self

@@ -18,13 +18,13 @@ module Relay::Tools
     #  Returns an iframe with an embed
     def call
       jukebox.map do |j|
-        {directions:, iframe: iframe(j)}
+        {directions:, html: html(j)}
       end
     end
 
     private
 
-    def iframe(j)
+    def html(j)
       data = File.read File.join(Relay.fragments_dir, "_jukebox.erb")
       ERB.new(data).result_with_hash(j:)
     end
@@ -38,7 +38,7 @@ module Relay::Tools
     end
 
     def directions
-      %w["cache the jukebox", "embed the iframe in your response"]
+      ["embed the html in your response exactly as it appears"]
     end
   end
 end
