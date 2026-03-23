@@ -1,22 +1,5 @@
-<div class="not-prose hidden mx-auto my-3 w-full max-w-2xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-zinc-900 text-zinc-100 shadow-[0_20px_60px_rgba(15,23,42,0.45)] ring-1 ring-white/5" data-media-dock data-media-title="Jukebox">
-  <div class="border-b border-white/10 bg-gradient-to-r from-zinc-900 via-zinc-900 to-zinc-800 px-4 py-3">
-    <div class="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">
-      Jukebox
-    </div>
-    <div class="mt-1 text-sm font-medium text-zinc-100">
-      <%= j['artist'] %> - <%= j['title'] %>
-    </div>
-  </div>
-  <div class="aspect-video w-full bg-black">
-    <iframe
-      data-media-id="<%= j['track'] %>"
-      class="h-full w-full"
-      src="<%= j['track'] %>"
-      title="Jukebox"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen
-    ></iframe>
-  </div>
-</div>
+<ul class='artist'>
+  <li data-name="name"> <%= j['name'] %> </li>
+  <li data-name="title"> <%= j['title'] %> </li>
+  <li data-name="track"> <%= j['track'] %> </li>
+</ul>
