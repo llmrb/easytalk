@@ -52,6 +52,12 @@ class Relay::Router < Roda
         ListProviders.new(self).call
       end
     end
+
+    r.is "tools" do
+      r.get do
+        ListTools.new(self).call
+      end
+    end
   end
 
   private

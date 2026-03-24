@@ -1,0 +1,21 @@
+<aside id="tools-list" class="panel w-full shrink-0 px-4 py-4 text-sm text-stone-600" hx-swap-oob="outerHTML">
+  <div class="flex flex-col gap-3">
+    <span class="label">Tools</span>
+    <ul class="divide-y divide-stone-200/80">
+      <% tools.each do |tool| %>
+        <li class="py-2 first:pt-0 last:pb-0">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <div class="text-sm font-semibold tracking-tight text-zinc-800"><%= tool.name %></div>
+              <div class="mt-0.5 text-[11px] leading-4 text-stone-500"><%= tool.description %></div>
+            </div>
+            <span class="mt-0.5 shrink-0 rounded-full bg-stone-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em] text-stone-500">
+              Tool
+            </span>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <span class="text-[11px] text-stone-400"><%= tools.size %> tools available</span>
+  </div>
+</aside>

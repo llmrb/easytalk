@@ -5,10 +5,7 @@ module Relay::Routes
     ##
     # @return [String]
     def call
-      response["content_type"] = "application/json"
-      LLM::Tool.registry.map do
-        { "name" => _1.name, "description" => _1.description }
-      end.to_json
+      partial("fragments/tools", {locals: {tools: LLM::Tool.registry}})
     end
   end
 end

@@ -3,7 +3,7 @@
 module Relay::Tools
   class CreateImage < Base
     name "create-image"
-    description "Create a generated image"
+    description "Generates one or more images from a prompt and returns embeddable HTML"
     param :prompt, String, "The prompt", required: true
     param :provider, Enum["openai", "google", "xai"], "The provider", default: "xai"
     param :n, Integer, "The number of images to generate", default: 1

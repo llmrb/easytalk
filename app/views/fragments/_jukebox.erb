@@ -1,17 +1,15 @@
 <aside
   id="jukebox"
-  class="panel hidden w-full shrink-0 overflow-hidden lg:sticky lg:top-6 lg:flex lg:w-[24rem] lg:self-start"
+  class="panel hidden w-full shrink-0 overflow-hidden border-transparent lg:flex"
 >
   <div class="flex w-full flex-col">
     <div class="border-b border-stone-200/80 bg-stone-50/80 px-4 py-3">
-      <div class="label">Now Playing</div>
-      <div id="jukebox-title" class="jukebox-title mt-1 text-sm font-medium text-zinc-700">
-        Waiting for a track
-      </div>
+      <div class="label">Jukebox</div>
+      <div id="jukebox-title" class="jukebox-title hidden"></div>
     </div>
     <div
       id="jukebox-body"
-      class="jukebox-body flex min-h-[14rem] items-center justify-center bg-zinc-950/95 p-3 text-sm text-zinc-400"
+      class="jukebox-body aspect-video flex items-center justify-center overflow-hidden bg-zinc-950/95 text-sm text-zinc-400"
     >
       Ask for a list of songs to choose a music video
     </div>

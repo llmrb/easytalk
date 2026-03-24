@@ -6,7 +6,7 @@ module Relay::Tools
   # since it is unlikely to be heard of by an LLM.
   class RelayKnowledge < Base
     name 'relay-knowledge'
-    description 'Returns knowledge about Relay and llm.rb'
+    description 'Returns Relay or llm.rb documentation so answers can cite project details'
     param :topic, Enum["relay", "llm.rb"], "The knowledge topic", required: true
 
     ##

@@ -20,6 +20,7 @@ module Relay
   require_relative "init/database"
   require_relative "init/sidekiq"
   require_relative "init/router"
+  require_relative "init/tools"
 
   FileUtils.mkdir_p File.join(Relay.public_dir, "g")
 end

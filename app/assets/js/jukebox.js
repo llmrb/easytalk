@@ -25,8 +25,8 @@ export const Jukebox = () => {
 
   const replace = (newPlayer, oldPlayer) => {
     self.activePlayer = newPlayer
-    newPlayer.show()
     oldPlayer.replaceWith(newPlayer)
+    newPlayer.show()
   }
 
   self.scanForMusic = (node) => {

@@ -9,7 +9,7 @@ module Relay::Tools
   # file and it can be edited to suit your own tastes.
   class JukeBox < Base
     name "jukebox"
-    description "Provides a list of music videos that can be played"
+    description "Returns a small built-in playlist of playable music videos"
 
     ##
     # @param [String] category

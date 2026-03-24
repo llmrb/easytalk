@@ -8,6 +8,7 @@ const Player = function (parentEl) {
   const iframeEl = bodyEl?.querySelector("iframe")
 
   self.parentEl = parentEl
+  self.iframeEl = iframeEl
 
   self.show = () => {
     parentEl.classList.remove("hidden")
@@ -39,7 +40,8 @@ const Player = function (parentEl) {
   }
 
   self.replaceWith = (otherPlayer) => {
-    bodyEl.replaceChildren(otherPlayer.parentEl)
+    self.setTitle(otherPlayer.getTitle())
+    bodyEl.replaceChildren(otherPlayer.iframeEl)
   }
 
   return self
