@@ -8,10 +8,13 @@ window.marked = marked
 require("htmx-ext-ws")
 
 import { Jukebox } from "../js/jukebox"
+import { Timer } from "../js/jukebox/timer"
 
 ;(function() {
   document.addEventListener("DOMContentLoaded", () => {
     const jukebox = Jukebox()
+    const timer = Timer()
+    
     const scroll = () => {
       const stream = document.getElementById("chatbot-stream")
       if (!stream) return
@@ -44,6 +47,13 @@ import { Jukebox } from "../js/jukebox"
           jukebox.scanForMusic(node)
       })
     }
+
+    // Handle status updates from HTMX
+    document.body.addEventListener("htmx:oobAfterSwap", (event) => {
+      if (event.target.id === "chatbot-status") {
+        timer.handle(event.target)
+      }
+    })
 
     markdown()
     follow()
