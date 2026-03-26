@@ -9,17 +9,17 @@ const Timer = function(parentEl) {
   self.startTime = null
   self.el = null
 
-  self.getStatusEl = (parent = self.parentEl) => {
+  const getStatusEl = (parent = self.parentEl) => {
     return parent?.querySelector(".status-value")
   }
 
-  self.create = () => {
+  const create = () => {
     const timer = document.createElement("span")
     timer.className = "timer-value"
     return timer
   }
 
-  self.update = (elapsedSeconds) => {
+  const update = (elapsedSeconds) => {
     if (!self.el) return
     self.el.textContent = `${elapsedSeconds}s`
     if (elapsedSeconds >= 10)
@@ -28,20 +28,20 @@ const Timer = function(parentEl) {
       self.el.removeAttribute("title")
   }
 
-  self.tick = () => {
+  const tick = () => {
     if (!self.startTime) return
     const elapsedMs = Date.now() - self.startTime
     const elapsedSeconds = Math.floor(elapsedMs / 1000)
-    self.update(elapsedSeconds)
+    update(elapsedSeconds)
     const delay = 1000 - (elapsedMs % 1000)
-    self.timeout = setTimeout(self.tick, delay)
+    self.timeout = setTimeout(tick, delay)
   }
 
-  self.attachTo = (span) => {
+  const attachTo = (span) => {
     if (self.el && !self.el.isConnected)
       self.el = null
     if (!span || self.el) return
-    self.el = self.create()
+    self.el = create()
     const wrapper = document.createElement("span")
     wrapper.className = "status-active"
     const originalText = span.textContent.replace(/\s*\(\d+s\)$/, "")
@@ -52,40 +52,40 @@ const Timer = function(parentEl) {
     span.appendChild(wrapper)
   }
 
-  self.detach = () => {
+  const detach = () => {
     if (!self.el) return
     if (self.el.parentNode)
       self.el.parentNode.remove()
     self.el = null
   }
 
-  self.start = (statusText) => {
+  const start = (statusText) => {
     if (self.timeout)
       clearTimeout(self.timeout)
     self.startTime = Date.now()
-    const span = self.getStatusEl()
+    const span = getStatusEl()
     if (!span) return
-    self.attachTo(span)
-    self.update(0)
-    self.timeout = setTimeout(self.tick, 1000)
+    attachTo(span)
+    update(0)
+    self.timeout = setTimeout(tick, 1000)
   }
 
-  self.stop = () => {
+  const stop = () => {
     if (self.timeout)
       clearTimeout(self.timeout)
     self.timeout = null
-    self.detach()
+    detach()
     self.startTime = null
   }
 
   self.handle = (parent) => {
-    const span = self.getStatusEl(parent)
+    const span = getStatusEl(parent)
     if (!span) return
     const statusText = span.textContent.trim()
     if (statusText.startsWith("Thinking") || statusText.startsWith("Running"))
-      self.start(statusText)
+      start(statusText)
     else
-      self.stop()
+      stop()
   }
 
   return self
