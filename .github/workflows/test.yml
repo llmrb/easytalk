@@ -1,0 +1,28 @@
+name: Relay
+
+on:
+  push:
+
+jobs:
+  test:
+    name: Relay
+    runs-on: ubuntu-latest
+    env:
+      RACK_ENV: test
+      SESSION_SECRET: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Set up database
+        run: bundle exec rake db:setup
+
+      - name: Run tests
+        run: bundle exec rake test
