@@ -293,12 +293,6 @@ Run the full test suite:
 rake test
 ```
 
-Create the test directory structure (if needed):
-
-```bash
-rake test:create
-```
-
 ### Test Structure
 
 - **`test/test_helper.rb`** - Base test class with Rack::Test setup
