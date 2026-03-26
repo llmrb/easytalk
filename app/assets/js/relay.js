@@ -51,7 +51,7 @@ import { Timer } from "../js/jukebox/timer"
     // Handle status updates from HTMX
     document.body.addEventListener("htmx:oobAfterSwap", (event) => {
       if (event.target.id === "chatbot-status") {
-        timer.handleStatusUpdate(event.target)
+        timer.handle(event.target)
       }
     })
 
