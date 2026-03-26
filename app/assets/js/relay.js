@@ -45,59 +45,70 @@ import { Jukebox } from "../js/jukebox"
       })
     }
 
-    // Simple timer functionality for thinking/tool execution
-    let timerInterval = null
-    let timerStartTime = null
+    // Timer functionality similar to jukebox player pattern
+    const Timer = function() {
+      const self = Object.create(null)
+      let interval = null
+      let startTime = null
+      let currentStatus = ""
 
-    const startTimer = (statusText) => {
-      if (timerInterval) {
-        clearInterval(timerInterval)
+      const updateDisplay = (text) => {
+        const statusElement = document.getElementById("chatbot-status")
+        if (!statusElement) return
+        
+        const statusSpan = statusElement.querySelector(".font-medium.text-zinc-100")
+        if (statusSpan) {
+          statusSpan.textContent = text
+        }
       }
-      
-      timerStartTime = Date.now()
-      timerInterval = setInterval(() => {
-        const elapsedSeconds = Math.floor((Date.now() - timerStartTime) / 1000)
-        updateStatusText(`${statusText} (${elapsedSeconds}s)`)
-      }, 1000)
-      
-      // Initial update
-      updateStatusText(`${statusText} (0s)`)
-    }
 
-    const stopTimer = () => {
-      if (timerInterval) {
-        clearInterval(timerInterval)
-        timerInterval = null
+      self.start = (statusText) => {
+        if (interval) {
+          clearInterval(interval)
+        }
+        
+        currentStatus = statusText.replace(/\s*\(\d+s\)$/, "")
+        startTime = Date.now()
+        
+        interval = setInterval(() => {
+          const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000)
+          updateDisplay(`${currentStatus} (${elapsedSeconds}s)`)
+        }, 1000)
+        
+        updateDisplay(`${currentStatus} (0s)`)
       }
-      timerStartTime = null
-    }
 
-    const updateStatusText = (text) => {
-      const statusElement = document.getElementById("chatbot-status")
-      if (!statusElement) return
-      
-      const statusSpan = statusElement.querySelector(".font-medium.text-zinc-100")
-      if (statusSpan) {
-        statusSpan.textContent = text
+      self.stop = () => {
+        if (interval) {
+          clearInterval(interval)
+          interval = null
+        }
+        startTime = null
+        currentStatus = ""
       }
-    }
 
-    // Handle status updates from HTMX
-    document.body.addEventListener("htmx:oobAfterSwap", (event) => {
-      if (event.target.id === "chatbot-status") {
-        const statusSpan = event.target.querySelector(".font-medium.text-zinc-100")
+      self.handleStatusUpdate = (statusElement) => {
+        const statusSpan = statusElement.querySelector(".font-medium.text-zinc-100")
         if (!statusSpan) return
         
         const statusText = statusSpan.textContent.trim()
         
-        // Check if we should start/stop timer
         if (statusText.startsWith("Thinking") || statusText.startsWith("Running")) {
-          // Extract base status without existing timer
-          const baseStatus = statusText.replace(/\s*\(\d+s\)$/, "")
-          startTimer(baseStatus)
+          self.start(statusText)
         } else {
-          stopTimer()
+          self.stop()
         }
+      }
+
+      return self
+    }
+
+    const timer = Timer()
+
+    // Handle status updates from HTMX
+    document.body.addEventListener("htmx:oobAfterSwap", (event) => {
+      if (event.target.id === "chatbot-status") {
+        timer.handleStatusUpdate(event.target)
       }
     })
 
