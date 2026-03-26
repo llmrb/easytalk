@@ -7,7 +7,6 @@ const Timer = function() {
   const update = (text) => {
     const statusElement = document.getElementById("chatbot-status")
     if (!statusElement) return
-    
     const statusSpan = statusElement.querySelector(".font-medium.text-zinc-100")
     if (statusSpan) {
       statusSpan.textContent = text
@@ -18,15 +17,12 @@ const Timer = function() {
     if (interval) {
       clearInterval(interval)
     }
-    
     currentStatus = statusText.replace(/\s*\(\d+s\)$/, "")
     startTime = Date.now()
-    
     interval = setInterval(() => {
       const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000)
       update(`${currentStatus} (${elapsedSeconds}s)`)
     }, 1000)
-    
     update(`${currentStatus} (0s)`)
   }
 
@@ -42,9 +38,7 @@ const Timer = function() {
   self.handle = (statusElement) => {
     const statusSpan = statusElement.querySelector(".font-medium.text-zinc-100")
     if (!statusSpan) return
-    
     const statusText = statusSpan.textContent.trim()
-    
     if (statusText.startsWith("Thinking") || statusText.startsWith("Running")) {
       self.start(statusText)
     } else {
