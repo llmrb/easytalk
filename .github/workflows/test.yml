@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    name: Relay / test
+    name: Relay
     runs-on: ubuntu-latest
     env:
       RACK_ENV: test
