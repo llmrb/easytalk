@@ -29,11 +29,13 @@ keeping the frontend light and the architecture Ruby-centric.
 
 - ⚙️ Rack application built with Falcon, Roda, and async-websocket
 - 🗃️ Sequel with built-in migrations
-- 🧵 Sidekiq workers for background jobs
-- 🧰 Built-in task monitor that supervises the full dev environment: web, workers, assets
-- 🗂️  Session support through Roda's session plugin
+- 🧵 Optional Sidekiq workers for background jobs when Redis is configured
+- 🧰 Built-in task monitor that supervises the development environment: web, workers, assets
+- 🗂️ Session support through Roda's session plugin
 - ⚡ In-memory cache support via `Relay.cache`
 - 🔐 Automatic `.env` loading during app boot
+- 🧭 Zeitwerk autoloading under the `Relay` namespace
+- 🛠️ Automatic tool loading from `app/tools/`
 
 ## Quick start
 
@@ -146,8 +148,21 @@ is absent, Relay starts without any MCP servers.
 
 The architecture is intentionally simple. HTMX keeps the client light,
 while server-rendered HTML keeps the application comfortable for
-Ruby-focused developers. Background work is handled with Sidekiq, and
-development processes are coordinated by Relay's task monitor.
+Ruby-focused developers. Interactive chat runs over the WebSocket
+endpoint at `/api/ws`, and background work can be handled by Sidekiq
+when Redis is configured.
+
+Relay boots from `app/init.rb`, which loads environment variables,
+connects to the database, configures optional Sidekiq support, sets up
+Roda routing, and loads tools from `app/tools/`. Code under `app/` is
+autoloaded via Zeitwerk under the `Relay` namespace. Frontend assets are
+built from `app/assets` with Webpack, and `rake dev:start` uses Relay's
+task monitor to run the web server, asset builds, and workers together
+in development.
+
+Session state is useful for lightweight per-user settings such as the
+selected provider and model, while shared in-process cached values are
+stored in `Relay.cache`.
 
 Some important notes:
 
@@ -155,7 +170,7 @@ Some important notes:
   autoloading, and application initialization.
 * `.env` is loaded automatically during boot when present.
 * HTTP routing is handled by Roda, with templates rendered from
-  `app/views` and static assets served from `public/`.
+  `app/views`.
 * Webpack builds the JavaScript and CSS assets from `app/assets`.
 
 The codebase is organized by responsibility:
