@@ -39,8 +39,16 @@ keeping the frontend light and the architecture Ruby-centric.
 
 **Setup**
 
-Redis is used by Sidekiq but we haven't had a reason to use it yet, so it is optional for now. <br>
-SQLite is required for database support.
+Relay is easy to start locally. Right now it only requires:
+
+- Ruby
+- a web server, via `bundle exec rake dev:start`
+- Node.js
+- Webpack
+- SQLite
+
+The architecture supports more, including Sidekiq and Redis, but those
+are optional for the current local setup.
 
     bundle install
     bundle exec rake db:setup
