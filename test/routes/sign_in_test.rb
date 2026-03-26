@@ -16,7 +16,7 @@ class SignInRouteTest < Relay::Test
     assert_match "method=\"post\"", last_response.body
   end
 
-  def test_sign_in_with_invalid_credentials
+  def test_sign_in_with_invalid_credentials_returns_unauthorized
     post "/sign-in", { username: "invalid", password: "wrong" }
     assert_equal 401, last_response.status
     assert_match "Unauthorized", last_response.body

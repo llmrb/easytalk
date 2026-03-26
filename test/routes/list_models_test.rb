@@ -8,15 +8,9 @@ class ListModelsRouteTest < Relay::Test
     assert_equal 404, last_response.status
   end
 
-  def test_models_route_requires_authentication
+  def test_models_route_redirects_unauthenticated_users_to_sign_in
     get "/models"
-    assert_equal 401, last_response.status
-    assert_match "Unauthorized", last_response.body
-  end
-
-  def test_models_route_returns_json_when_unauthenticated
-    get "/models"
-    assert_equal 401, last_response.status
-    assert_equal "application/json", last_response.headers["Content-Type"]
+    assert_equal 302, last_response.status
+    assert_equal "/sign-in", last_response.headers["Location"]
   end
 end
