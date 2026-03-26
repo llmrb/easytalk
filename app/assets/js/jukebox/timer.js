@@ -40,6 +40,7 @@ const Timer = function() {
   }
 
   self.handle = (parentEl) => {
+    self.parentEl = parentEl
     const span = getSpan()
     if (!span) return
     const statusText = span.textContent.trim()
