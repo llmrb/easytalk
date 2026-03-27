@@ -7,14 +7,15 @@ module Relay
   require "erb"
   require "yaml"
 
-  require_relative "../lib/relay"
-
   loader = Zeitwerk::Loader.new
   loader.ignore(
     File.join(__dir__, "init.rb"),
     File.join(__dir__, "init")
   )
   loader.push_dir(__dir__, namespace: self)
+
+  require_relative "../lib/relay"
+
   loader.enable_reloading if development?
   loader.setup
   @loader = loader
