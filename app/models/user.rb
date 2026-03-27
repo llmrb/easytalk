@@ -4,6 +4,8 @@ module Relay::Models
   class User < Sequel::Model
     set_dataset :users
 
+    one_to_many :sessions
+
     ##
     # Hashes and stores the given password.
     # @param [String] value
