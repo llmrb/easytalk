@@ -4,7 +4,7 @@ module Relay::Models
   class Session < Sequel::Model
     set_dataset :sessions
     
-    plugin :timestamps, create: :created_at, update: :updated_at
+    include Relay::Model
 
     many_to_one :user
 
