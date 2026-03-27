@@ -3,6 +3,8 @@
 module Relay::Models
   class Session < Sequel::Model
     set_dataset :sessions
+    
+    plugin :timestamps, create: :created_at, update: :updated_at
 
     many_to_one :user
 
@@ -58,21 +60,6 @@ module Relay::Models
     # @return [String]
     def display_name
       "#{model} (#{provider}) - #{created_at.strftime('%Y-%m-%d %H:%M')}"
-    end
-
-    ##
-    # Hook to set timestamps before creation
-    def before_create
-      self.created_at = Time.now
-      self.updated_at = Time.now
-      super
-    end
-
-    ##
-    # Hook to update timestamp before save
-    def before_save
-      self.updated_at = Time.now
-      super
     end
   end
 end
