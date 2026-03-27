@@ -1,6 +1,6 @@
 Sequel.migration do
   change do
-    create_table(:sessions) do
+    create_table(:contexts) do
       primary_key :id
       foreign_key :user_id, :users, null: false, on_delete: :cascade
       String :model, null: false
@@ -8,7 +8,7 @@ Sequel.migration do
       Integer :input_tokens, default: 0
       Integer :output_tokens, default: 0
       Integer :total_tokens, default: 0
-      column :session_data, :json, null: false, default: Sequel.lit("'{}'")
+      column :data, :json, null: false, default: Sequel.lit("'{}'")
 
       DateTime :created_at, null: false
       DateTime :updated_at, null: false

@@ -6,7 +6,7 @@ module Relay::Models
 
     include Relay::Model
 
-    one_to_many :sessions
+    one_to_many :contexts
 
     ##
     # Hashes and stores the given password.
