@@ -17,7 +17,7 @@ import { Timer } from "../js/jukebox/timer"
     const stream = document.getElementById("chatbot-stream")
     let shouldFollow = true
 
-    const nearBottom = (el, threshold = 48) =>
+    const isNearBottom = (el, threshold = 48) =>
       !el || el.scrollHeight - el.scrollTop - el.clientHeight <= threshold
 
     const scroll = () => {
@@ -53,9 +53,9 @@ import { Timer } from "../js/jukebox/timer"
     }
 
     if (stream) {
-      shouldFollow = nearBottom(stream)
+      shouldFollow = isNearBottom(stream)
       stream.addEventListener("scroll", () => {
-        shouldFollow = nearBottom(stream)
+        shouldFollow = isNearBottom(stream)
       }, { passive: true })
     }
 
