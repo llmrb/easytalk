@@ -18,7 +18,7 @@ import { Timer } from "../js/jukebox/timer"
     let shouldFollow = true
 
     const isNearBottom = (el, threshold = 48) =>
-      !el || el.scrollHeight - el.scrollTop - el.clientHeight <= threshold
+      !el || (el.scrollHeight - el.scrollTop - el.clientHeight) <= threshold
 
     const scroll = () => {
       if (!stream || !shouldFollow) return
